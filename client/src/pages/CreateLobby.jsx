@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import Notification from '../components/Notification';
 import generateLobbyId from '../utils/generateLobbyId';
+import lobbyService from '../services/lobbyService';
 
 const CreateLobby = () => {
   const [lobbyName, setLobbyName] = useState('');
@@ -40,12 +41,17 @@ const CreateLobby = () => {
       const lobbyId = generateLobbyId();
 
       const lobbyData = {
+        lobbyId,
         name: lobbyName.trim(),
         pin: pin.trim(),
-        creator: userName.trim()
+        username: userName.trim()
       };
-      localStorage.setItem(lobbyId, JSON.stringify(lobbyData));
-      navigate('/lobby-page', { state: { lobbyId, userName, isCreator: true } });
+
+      lobbyService
+      .createLobby(lobbyData)
+      .then(() => { 
+        navigate('/lobby-page', { state: { lobbyId, userName, isCreator: true } }) 
+      });
     }
   };
 

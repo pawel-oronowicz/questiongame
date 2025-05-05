@@ -4,6 +4,7 @@ import {
   joinLobby,
   getLobby
 } from '../controllers/lobbyController.js';
+import Lobby from '../models/Lobby.js';
 
 const router = express.Router();
 

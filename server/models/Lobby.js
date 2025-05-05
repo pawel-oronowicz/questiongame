@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import User from './User.js';
 
 const LobbySchema = new mongoose.Schema({
   lobbyId: { 
