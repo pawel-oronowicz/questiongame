@@ -40,14 +40,14 @@ const CreateLobby = () => {
       })
     } else {
       const lobbyId = generateLobbyId();
-      const userToken = generateUserToken();
+      const token = generateUserToken();
 
       const lobbyData = {
         lobbyId,
         name: lobbyName.trim(),
         pin: pin.trim(),
         username: userName.trim(),
-        userToken
+        token
       };
 
       lobbyService

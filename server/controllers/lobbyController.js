@@ -3,7 +3,7 @@ import User from '../models/User.js';
 
 export const createLobby = async (req, res) => {
   try {
-    const { lobbyId, name, pin, username } = req.body;
+    const { lobbyId, name, pin, username, token } = req.body;
 
     // Sprawdź, czy lobby o takim ID już istnieje
     const existingLobby = await Lobby.findOne({ lobbyId });
@@ -15,7 +15,8 @@ export const createLobby = async (req, res) => {
     const user = new User({
       username,
       lobbyId,
-      isCreator: true
+      isCreator: true,
+      token
     });
     await user.save();
 
