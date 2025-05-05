@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import Notification from '../components/Notification';
 import generateLobbyId from '../utils/generateLobbyId';
+import generateUserToken from '../utils/generateUserToken';
 import lobbyService from '../services/lobbyService';
 
 const CreateLobby = () => {
@@ -39,18 +40,20 @@ const CreateLobby = () => {
       })
     } else {
       const lobbyId = generateLobbyId();
+      const userToken = generateUserToken();
 
       const lobbyData = {
         lobbyId,
         name: lobbyName.trim(),
         pin: pin.trim(),
-        username: userName.trim()
+        username: userName.trim(),
+        userToken
       };
 
       lobbyService
       .createLobby(lobbyData)
       .then(() => { 
-        navigate('/lobby-page', { state: { lobbyId, userName, isCreator: true } }) 
+        navigate('/lobby/' + lobbyId, { state: { lobbyId, userName, isCreator: true } }) 
       });
     }
   };

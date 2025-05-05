@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import Notification from '../components/Notification';
+import generateUserToken from '../utils/generateUserToken';
+import lobbyService from '../services/lobbyService';
 
 const JoinLobby = () => {
   const [lobbyId, setLobbyId] = useState('');
@@ -26,16 +28,6 @@ const JoinLobby = () => {
       errors.push('PIN musi być 6-cyfrowy.');
     }
 
-    const storedLobby = localStorage.getItem(lobbyId.trim());
-    if (!storedLobby) {
-      errors.push("Lobby ID jest błędne.");
-    } else {
-      const parsedLobby = JSON.parse(storedLobby);
-      if (pin.trim() !== parsedLobby.pin) {
-        errors.push("Nieprawidłowy PIN.");
-      }
-    }
-
     if(userName.trim() === '') {
       errors.push('Nickname jest wymagany.');
     }
@@ -47,7 +39,27 @@ const JoinLobby = () => {
       })
     } else {
       setNotification();
-      navigate('/lobby-page', { state: { lobbyId, userName, isCreator: false } });
+      const userToken = generateUserToken();
+
+      const userData = {
+        username: userName.trim(),
+        pin,
+        lobbyId,
+        token: userToken
+      };
+
+      lobbyService
+      .joinLobby(userData)
+      .then(() => { 
+        navigate('/lobby/' + lobbyId, { state: { lobbyId, userName, isCreator: false } }) 
+      })
+      .catch((err) => {
+        console.error(err)
+        setNotification({
+          'message': err.response.data.error,
+          'type': 'error'
+        })
+      });
     }
   };
 

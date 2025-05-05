@@ -11,6 +11,11 @@ const UserSchema = new mongoose.Schema({
   },
   isCreator: {
     type: Boolean
+  },
+  token: {
+    type: String,
+    required: true,
+    unique: true
   }
 }, { timestamps: true })
 

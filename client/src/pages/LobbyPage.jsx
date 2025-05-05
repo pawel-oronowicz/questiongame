@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import lobbyService from '../services/lobbyService';
 
 const LobbyPage = () => {
   const location = useLocation();
-  const { lobbyId, userName, isCreator } = location.state || {};
+  const { userName, isCreator } = location.state || {};
+  const { lobbyId } = useParams();
   const [lobby, setLobby] = useState(null);
   
   useEffect(() => {
@@ -24,7 +25,7 @@ const LobbyPage = () => {
       <h2>Uczestnicy:</h2>
       <ul>
         {lobby.users.map(user => (
-          <li key={user.id}>{user.userName}</li>
+          <li key={user._id}>{user.username}</li>
         ))}
       </ul>
     </>

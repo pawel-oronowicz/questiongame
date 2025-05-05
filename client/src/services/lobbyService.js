@@ -11,9 +11,14 @@ const createLobby = async (newLobby) => {
   return response.data;
 }
 
-const joinLobby = async ({lobbyId, pin, username}) => {
-  const response = await axios.post(`${baseUrl}/join`, { lobbyId, pin, username });
+const joinLobby = async ({lobbyId, pin, username, token}) => {
+  const response = await axios.post(`${baseUrl}/join`, { lobbyId, pin, username, token });
   return response.data;
 }
 
-export default { getLobby, createLobby, joinLobby }
+const verifyToken = async ({ lobbyId, token }) => {
+  const response = await axios.post(`${baseUrl}/verify`, { lobbyId, token });
+  return response.data;
+};
+
+export default { getLobby, createLobby, joinLobby, verifyToken }

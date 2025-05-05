@@ -37,7 +37,7 @@ export const createLobby = async (req, res) => {
 
 export const joinLobby = async (req, res) => {
   try {
-    const { lobbyId, pin, username } = req.body;
+    const { lobbyId, pin, username, token } = req.body;
 
     // Sprawdź, czy lobby o takim ID już istnieje
     const lobby = await Lobby.findOne({ lobbyId });
@@ -60,7 +60,8 @@ export const joinLobby = async (req, res) => {
     const user = new User({
       username,
       lobbyId,
-      isCreator: false
+      isCreator: false,
+      token
     });
     await user.save();
 
