@@ -59,6 +59,47 @@ const LobbyPage = () => {
 
   const handleSubmitChallenge = (e) => {
     e.preventDefault();
+
+    let errors = [];
+
+    if(challenge.trim() === '') {
+      errors.push('Zadanie nie może być puste.');
+    }
+
+    if(errors.length > 0) {
+      setNotification({
+        'message': errors.join(' '),
+        'type': 'error'
+      })
+    } else {
+      setNotification();
+
+      const challengeData = {
+        text: challenge.trim(),
+        lobbyId,
+        weight
+      };
+
+      lobbyService
+      .addChallenge(challengeData)
+      .then(() => {
+        setNotification({
+          'message': 'Zadanie dodane pomyślnie',
+          'type': 'success'
+        })
+        setTimeout(() => {
+          setNotification({})
+        }, 5000)
+        setChallenge('');
+      })
+      .catch((err) => {
+        console.error(err)
+        setNotification({
+          'message': err.response.data.error,
+          'type': 'error'
+        })
+      });
+    }
   }
   
   useEffect(() => {

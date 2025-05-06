@@ -1,5 +1,6 @@
 import Lobby from '../models/Lobby.js';
 import Question from '../models/Question.js';
+import Challenge from '../models/Challenge.js';
 import User from '../models/User.js';
 
 export const createLobby = async (req, res) => {
@@ -125,14 +126,14 @@ export const addQuestion = async (req, res) => {
 
 export const addChallenge = async (req, res) => {
   try {
-    const { text, lobbyId } = req.body;
+    const { text, lobbyId, weight } = req.body;
 
-    // Stwórz nowe pytanie
-    const question = new Question({
+    const challenge = new Challenge({
       text,
-      lobbyId
+      lobbyId,
+      weight
     });
-    await question.save();
+    await challenge.save();
 
     res.status(200).json({
       message: 'Challenge added successfully'
