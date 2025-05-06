@@ -2,7 +2,9 @@ import express from 'express';
 import {
   createLobby,
   joinLobby,
-  getLobby
+  getLobby,
+  addQuestion,
+  addChallenge
 } from '../controllers/lobbyController.js';
 import User from '../models/User.js';
 
@@ -13,7 +15,7 @@ router.post('/join', joinLobby);
 router.get('/:lobbyId', getLobby);
 router.post('/verify', async (req, res) => {
   const { lobbyId, token } = req.body;
-  
+
   try {
     const user = await User.findOne({ lobbyId, token });
     if (!user) return res.status(404).json({ error: 'Użytkownik nie znaleziony' });
@@ -26,5 +28,7 @@ router.post('/verify', async (req, res) => {
     res.status(500).json({ error: 'Błąd serwera' });
   }
 });
+router.post('/add-question', addQuestion);
+router.post('/add-challenge', addChallenge);
 
 export default router;

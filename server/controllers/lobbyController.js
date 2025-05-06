@@ -1,4 +1,5 @@
 import Lobby from '../models/Lobby.js';
+import Question from '../models/Question.js';
 import User from '../models/User.js';
 
 export const createLobby = async (req, res) => {
@@ -101,3 +102,43 @@ export const getLobby = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 }
+
+export const addQuestion = async (req, res) => {
+  try {
+    const { text, lobbyId } = req.body;
+
+    // Stwórz nowe pytanie
+    const question = new Question({
+      text,
+      lobbyId
+    });
+    await question.save();
+
+    res.status(200).json({
+      message: 'Question added successfully'
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+export const addChallenge = async (req, res) => {
+  try {
+    const { text, lobbyId } = req.body;
+
+    // Stwórz nowe pytanie
+    const question = new Question({
+      text,
+      lobbyId
+    });
+    await question.save();
+
+    res.status(200).json({
+      message: 'Challenge added successfully'
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
