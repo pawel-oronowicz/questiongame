@@ -147,8 +147,20 @@ export const getQuestions = async (req, res) => {
   try {
     const { lobbyId } = req.params;
     const questions = await Question.find({ lobbyId }).exec();
-    
+
     res.status(200).json(questions);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+export const getChallenges = async (req, res) => {
+  try {
+    const { lobbyId } = req.params;
+    const challenges = await Challenge.find({ lobbyId }).exec();
+    
+    res.status(200).json(challenges);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Internal server error' });

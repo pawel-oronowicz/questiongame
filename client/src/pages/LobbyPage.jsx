@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useLocation, useParams } from "react-router-dom";
 import lobbyService from '../services/lobbyService';
 import Notification from '../components/Notification';
+import getWeightedRandomChallenge from '../utils/getWeightedRandomChallenge';
 
 const LobbyPage = () => {
   const location = useLocation();
@@ -109,14 +110,23 @@ const LobbyPage = () => {
 
   const startGame = async () => {
     setCurrentQuestionIndex(0);
-    const data = await lobbyService.getQuestions(lobbyId);
-    const shuffled = data.sort(() => Math.random() - 0.5);
-    setQuestions(shuffled);
+    const questions = await lobbyService.getQuestions(lobbyId);
+    const shuffledQuestions = questions.sort(() => Math.random() - 0.5);
+    setQuestions(shuffledQuestions);
+
+    const challenges = await lobbyService.getChallenges(lobbyId);
+    setChallenges(challenges);
+
     setGameInProgress(true);
   }
 
   const nextQuestion = () => {
     setCurrentQuestionIndex(prev => prev + 1);
+  }
+
+  const drawChallenge = () => {
+    const challenge = getWeightedRandomChallenge(challenges);
+    setCurrentChallenge(challenge);
   }
   
   useEffect(() => {
@@ -161,9 +171,13 @@ const LobbyPage = () => {
       {gameInProgress && questions.length > 0 && (
         <>
           <div>
-            {questions[currentQuestionIndex]?.text}
+            Pytanie: {questions[currentQuestionIndex]?.text}
           </div>
           <button onClick={nextQuestion}>Następne pytanie</button>
+          <div>
+            Zadanie: {currentChallenge?.text}
+          </div>
+          <button onClick={drawChallenge}>Wylosuj zadanie</button>
         </>
       )}
 

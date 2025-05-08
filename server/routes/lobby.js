@@ -5,7 +5,8 @@ import {
   getLobby,
   addQuestion,
   addChallenge,
-  getQuestions
+  getQuestions,
+  getChallenges
 } from '../controllers/lobbyController.js';
 import User from '../models/User.js';
 
@@ -32,5 +33,6 @@ router.post('/verify', async (req, res) => {
 router.post('/add-question', addQuestion);
 router.post('/add-challenge', addChallenge);
 router.get('/get-questions/:lobbyId', getQuestions);
+router.get('/get-challenges/:lobbyId', getChallenges);
 
 export default router;

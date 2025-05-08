@@ -36,4 +36,9 @@ const getQuestions = async(lobbyId) => {
   return response.data;
 }
 
-export default { getLobby, createLobby, joinLobby, verifyToken, addQuestion, addChallenge, getQuestions }
+const getChallenges = async(lobbyId) => {
+  const response = await axios.get(`${baseUrl}/get-challenges/${lobbyId}`);
+  return response.data;
+}
+
+export default { getLobby, createLobby, joinLobby, verifyToken, addQuestion, addChallenge, getQuestions, getChallenges }
