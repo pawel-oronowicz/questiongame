@@ -108,7 +108,6 @@ export const addQuestion = async (req, res) => {
   try {
     const { text, lobbyId } = req.body;
 
-    // Stwórz nowe pytanie
     const question = new Question({
       text,
       lobbyId
@@ -143,3 +142,15 @@ export const addChallenge = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+export const getQuestions = async (req, res) => {
+  try {
+    const { lobbyId } = req.params;
+    const questions = await Question.find({ lobbyId }).exec();
+    
+    res.status(200).json(questions);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}

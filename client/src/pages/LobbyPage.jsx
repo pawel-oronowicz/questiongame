@@ -12,6 +12,11 @@ const LobbyPage = () => {
   const [challenge, setChallenge] = useState('');
   const [weight, setWeight] = useState('');
   const [notification, setNotification] = useState({});
+  const [questions, setQuestions] = useState([]);
+  let [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [challenges, setChallenges] = useState([]);
+  const [currentChallenge, setCurrentChallenge] = useState(null);
+  const [gameInProgress, setGameInProgress] = useState(false);
 
   const handleSubmitQuestion = (e) => {
     e.preventDefault();
@@ -101,6 +106,18 @@ const LobbyPage = () => {
       });
     }
   }
+
+  const startGame = async () => {
+    setCurrentQuestionIndex(0);
+    const data = await lobbyService.getQuestions(lobbyId);
+    const shuffled = data.sort(() => Math.random() - 0.5);
+    setQuestions(shuffled);
+    setGameInProgress(true);
+  }
+
+  const nextQuestion = () => {
+    setCurrentQuestionIndex(prev => prev + 1);
+  }
   
   useEffect(() => {
     if(lobbyId) {
@@ -139,6 +156,17 @@ const LobbyPage = () => {
           <button type="submit">Dodaj</button>
         </div>
       </form>
+
+      <button onClick={startGame}>Start</button>
+      {gameInProgress && questions.length > 0 && (
+        <>
+          <div>
+            {questions[currentQuestionIndex]?.text}
+          </div>
+          <button onClick={nextQuestion}>Następne pytanie</button>
+        </>
+      )}
+
     </>
   )
 };
